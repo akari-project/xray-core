@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: MPL-2.0
+#
+# 本组织新增的最小 CI（panel-starter-kit M0-02）：构建，以及只针对本组织新增文件的 SPDX 头检查（CONV-25）。
+# UPSTREAM_BASE 是 node-agent 所用的上游提交（Xboard-Node 作者 fork 的提交，AGT-04）；
+# 跟随上游或 rebase 后（core-upgrade Skill）同步更新。
+name: panel-ci
+
+on:
+  push:
+    branches: [panel-base]
+  pull_request:
+    branches: [panel-base, "m*/**"]
+
+permissions:
+  contents: read
+
+env:
+  UPSTREAM_BASE: f479355399657c0ed07b3e8ac33e02f727094188
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Build
+        run: go build ./... && go build -o xray ./main
+
+  spdx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+      - run: python3 .github/scripts/check_org_spdx.py "$UPSTREAM_BASE"

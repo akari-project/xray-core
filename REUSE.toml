@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: MPL-2.0
+#
+# 本组织新增、不宜加注释头的文件（panel-starter-kit spec/02 CONV-25）。
+# 上游文件的许可证见仓库根目录的 LICENSE；本 fork 只检查本组织新增的文件（.github/scripts/check_org_spdx.py）。
+version = 1
+
+[[annotations]]
+path = [
+  "CLAUDE.md",
+  ".claude/**",
+]
+precedence = "override"
+SPDX-FileCopyrightText = "akari-project contributors"
+SPDX-License-Identifier = "MPL-2.0"
